@@ -5,11 +5,7 @@
     "browser": true,
     "jest": true
   },
-  "plugins": [
-    "react",
-    "jsx-ally",
-    "import"
-  ],
+  "plugins": ["react", "jsx-ally", "import"],
   "rules": {
     "react/jsx-filename-extension": [
       "error",
