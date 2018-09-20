@@ -1,10 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import MapGL, { Marker } from "react-map-gl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { Creators as MarkerActions } from "../../store/ducks/markers";
 import "mapbox-gl/dist/mapbox-gl.css";
+
+import Popup from "../../components/modal";
 
 class Main extends Component {
   state = {
@@ -24,28 +26,31 @@ class Main extends Component {
 
   render() {
     return (
-      <MapGL
-        {...this.state.viewport}
-        onClick={this.handleClickMap}
-        onViewportChange={viewport => this.setState({ viewport })}
-        mapboxApiAccessToken={
-          "pk.eyJ1IjoibWF0bGlua20iLCJhIjoiY2ptMWJ4ZW5sMGs3YzNwcjVndXp5cnZ4ayJ9.rYOKiMdCadpEeV9_WTryWg"
-        }
-      >
-        {this.props.markers != null
-          ? this.props.markers.map(item => (
-              <Marker
-                key={item.id}
-                latitude={item.latitude}
-                longitude={item.longitude}
-                onClick={this.handleClickMap}
-                captureClick={true}
-              >
-                <span>AKI</span>
-              </Marker>
-            ))
-          : null}
-      </MapGL>
+      <Fragment>
+        <MapGL
+          {...this.state.viewport}
+          onClick={this.handleClickMap}
+          onViewportChange={viewport => this.setState({ viewport })}
+          mapboxApiAccessToken={
+            "pk.eyJ1IjoibWF0bGlua20iLCJhIjoiY2ptMWJ4ZW5sMGs3YzNwcjVndXp5cnZ4ayJ9.rYOKiMdCadpEeV9_WTryWg"
+          }
+        >
+          {this.props.markers != null
+            ? this.props.markers.map(item => (
+                <Marker
+                  key={item.id}
+                  latitude={item.latitude}
+                  longitude={item.longitude}
+                  onClick={this.handleClickMap}
+                  captureClick={true}
+                >
+                  <span>AKI</span>
+                </Marker>
+              ))
+            : null}
+          <Popup />
+        </MapGL>
+      </Fragment>
     );
   }
 }
