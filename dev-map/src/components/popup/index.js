@@ -28,9 +28,22 @@ class Popup extends Component {
     const [longitude, latitude] = dataClickMap.lngLat;
 
     if (userGithub === "") return;
+
     closePopup();
     addMarkers({ longitude, latitude });
     this.setState({ userGithub: "" });
+  };
+
+  cancelPopup = () => {
+    const { userGithub } = this.state;
+    const { closePopup } = this.props;
+    if (userGithub === "") {
+      closePopup();
+    } else {
+      this.setState({ userGithub: "" }, () => {
+        closePopup();
+      });
+    }
   };
 
   render() {
@@ -48,7 +61,7 @@ class Popup extends Component {
             onChange={this.setUserGithub}
           />
           <ContainerButtons>
-            <CancelButton>Cancelar</CancelButton>
+            <CancelButton onClick={this.cancelPopup}>Cancelar</CancelButton>
             <SaveButton onClick={this.saveUserGithub}>Salvar</SaveButton>
           </ContainerButtons>
         </Modal>
