@@ -4,33 +4,38 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { Creators as MarkerActions } from "../../store/ducks/markers";
+import { Creators as ViewportActions } from "../../store/ducks/viewport";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import Popup from "../../components/modal";
+import Popup from "../../components/popup";
 
 class Main extends Component {
   state = {
-    viewport: {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      latitude: -5.821855,
-      longitude: -35.228174,
-      zoom: 13
-    }
+    visiblePopup: false,
+    dataClickMap: null
   };
 
   handleClickMap = e => {
-    const [longitude, latitude] = e.lngLat;
-    this.props.addMarkers({ longitude, latitude });
+    this.setState({
+      visiblePopup: true,
+      dataClickMap: e
+    });
+  };
+
+  closePopup = () => {
+    this.setState({ visiblePopup: false });
   };
 
   render() {
+    const { visiblePopup, dataClickMap } = this.state;
+    const { viewport } = this.props;
+
     return (
       <Fragment>
         <MapGL
-          {...this.state.viewport}
+          {...viewport}
           onClick={this.handleClickMap}
-          onViewportChange={viewport => this.setState({ viewport })}
+          onViewportChange={viewport => this.props.changeViewport({ viewport })}
           mapboxApiAccessToken={
             "pk.eyJ1IjoibWF0bGlua20iLCJhIjoiY2ptMWJ4ZW5sMGs3YzNwcjVndXp5cnZ4ayJ9.rYOKiMdCadpEeV9_WTryWg"
           }
@@ -48,19 +53,24 @@ class Main extends Component {
                 </Marker>
               ))
             : null}
-          <Popup />
         </MapGL>
+        <Popup
+          visiblePopup={visiblePopup}
+          dataClickMap={dataClickMap}
+          closePopup={this.closePopup}
+        />
       </Fragment>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  markers: state.markers
+  markers: state.markers,
+  viewport: state.viewport
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(MarkerActions, dispatch);
+  bindActionCreators({ ...MarkerActions, ...ViewportActions }, dispatch);
 
 export default connect(
   mapStateToProps,
