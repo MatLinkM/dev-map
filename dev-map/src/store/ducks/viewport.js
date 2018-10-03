@@ -9,13 +9,7 @@ const INITIAL_STATE = {
 export default function viewport(state = INITIAL_STATE, actions) {
   switch (actions.type) {
     case "CHANGE_VIEWPORT":
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        latitude: actions.payload.latitude,
-        longitude: actions.payload.latitude,
-        zoom: 13
-      };
+      return (state = actions.payload.viewport);
     default:
       return state;
   }
