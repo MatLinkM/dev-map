@@ -47,7 +47,7 @@ class Popup extends Component {
   };
 
   render() {
-    const { userGithub } = this.state.userGithub;
+    const { userGithub } = this.state;
     const { visiblePopup } = this.props;
 
     return (
@@ -71,7 +71,6 @@ class Popup extends Component {
 }
 
 const mapStateToProps = state => ({
-  popup: state.popup,
   markers: state.markers
 });
 

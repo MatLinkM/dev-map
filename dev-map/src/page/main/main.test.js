@@ -14,6 +14,16 @@ describe("<Main />", () => {
 
   it("should contain Marker", () => {
     const wrapper = shallow(<Main store={store} />);
-    expect(wrapper.dive().find(<Marker />));
+    expect(
+      wrapper
+        .dive()
+        .find(<Marker latitude={-5.821855} longitude={-35.228174} />)
+    );
+  });
+
+  it("visiblePopup should be false", () => {
+    const wrapper = shallow(<Main store={store} />);
+    wrapper.setState({ visiblePopup: false });
+    expect(wrapper.state("visiblePopup")).toBeFalsy();
   });
 });
