@@ -2,25 +2,17 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import Main from "../../page/main";
+import Popup from "./index";
 
 import store from "../../store";
-import { SaveButton } from "./styles";
+import { SaveButton, CancelButton } from "./styles";
+
+// const visiblePopup = true;
 
 describe("<Popup />", () => {
-  it("visiblePopup should be false", () => {
-    const wrapper = shallow(<Main store={store} />);
-
-    expect(wrapper.visiblePopup).toBeFalsy();
-  });
-
   it("visiblePopup should be true", () => {
-    const wrapper = shallow(<Main store={store} />);
-    console.log(wrapper.debug());
-
-    const button = shallow(<SaveButton />);
-    console.log(button.debug());
-    button.simulate("click");
-
-    expect(wrapper.visiblePopup).toBeTruthy();
+    const wrapper = shallow(<Popup store={store} />);
+    wrapper.setProps({ visiblePopup: true });
+    expect(wrapper.props().visiblePopup).toBeTruthy();
   });
 });
