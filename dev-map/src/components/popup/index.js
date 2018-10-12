@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { bindActionCreators } from "redux";
 import { Creators as MarkersActions } from "../../store/ducks/markers";
+import api from '../../services/api';
 
 import {
   Overlay,
@@ -22,13 +23,16 @@ class Popup extends Component {
     this.setState({ userGithub: e.target.value });
   };
 
-  saveUserGithub = () => {
+  saveUserGithub = async () => {
     const { userGithub } = this.state;
     const { addMarkers, dataClickMap, closePopup } = this.props;
     const [longitude, latitude] = dataClickMap.lngLat;
 
     if (userGithub === "") return;
 
+    const developerData = await this.getUserGithubData(userGithub);
+
+    console.log(developerData);
     closePopup();
     addMarkers({ longitude, latitude });
     this.setState({ userGithub: "" });
@@ -45,6 +49,12 @@ class Popup extends Component {
       });
     }
   };
+
+  getUserGithubData = async userGithub => {
+    const developerData = await api.get(`users/${userGithub}`);
+  
+    return developerData;
+  }
 
   render() {
     const { userGithub } = this.state;
